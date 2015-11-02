@@ -2,7 +2,7 @@
   -moz-box-shadow: 1px 1px 2px 0 #d0d0d0;
   -webkit-box-shadow: 1px 1px 2px 0 #d0d0d0;
   box-shadow: 1px 1px 2px 0 #d0d0d0;
-  background: #7D7D7D;
+  background: #FFFFFF;
   border: 1px solid #fff;
   border-color: #e4e4e4 #bebebd #bebebd #e4e4e4;
 
@@ -19,9 +19,10 @@
 }
 
 body {
-	background: url('/assets/tweed.png')
+	background: url('')
 }
 
 h1,h2,h3,h4,h5,h6 {
-	color: #ffffff;
+  text-align: center;
+	
 }
