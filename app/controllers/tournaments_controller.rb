@@ -18,9 +18,16 @@ class TournamentsController < ApplicationController
 
 	def register
 		@tournament = Tournament.find(params[:id])
-		TournamentUser.create(tournament: @tournament, user: current_user)
-		redirect_to tournament_path
-
+		User.all.each do |u|
+			if TournamentUser.exists?(:user => u, :tournament_id => @tournament.id)
+				
+				flash[:error] = 'You are already registered for this tournament.'
+			else
+				TournamentUser.create(tournament: @tournament, user: u)
+			
+				
+			end	
+		end
 	end
 
 	private

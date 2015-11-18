@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem "factory_girl_rails", "~> 4.0"
+
 gem 'simple_form'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
