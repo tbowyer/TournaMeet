@@ -7,6 +7,7 @@
 	<br />
 	<center>
 	<%= button_to "Register", {:controller => :tournaments, :action => 'register'}, :method => :post %>
+	<%= button_to "Start", {:controller => :tournaments, :action => 'start'}, :method => :post %>
 	<% if flash[:error].present? %>
 		<div class="col-xs-10 col-xs-offset-1 alert alert-danger">
 			<%= flash[:error] %>

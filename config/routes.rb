@@ -6,9 +6,11 @@ Tournameet::Application.routes.draw do
 
 
   resources :tournaments do
+    resources :matches
     resources :comments, :only => :create
     member do
       post :register
+      post :start
       
     end
   end
