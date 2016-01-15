@@ -32,7 +32,29 @@
 
 
 <div class="booyah-box col-xs-10 col-xs-offset-1">
-	<h1>Bracket</h1>
+	<h1>Matches</h1>
+	<% @matches.each do |match| %>
+		<% if match.player2_id != nil %>
+			<%= "p1 Seed: #{TournamentUser.find(match.player1_id.to_i).seed}" %>
+			<%= "p2 Seed: #{TournamentUser.find(match.player2_id.to_i).seed}" %>
+			<br />
+			<hr />	
+		<% elsif match.player1_id == nil and match.player2_id == nil  %>
+			<%= "Bye" %>
+			<br />
+			<hr />
+			<%= "Bye" %>
+		<% elsif match.player1_id != nil and match.player2_id == nil %>
+			<%= "p1 seed: #{TournamentUser.find(match.player1_id.to_i).seed}" %>
+			<%= "p2 seed: #{TournamentUser.find(match.player2_id.to_i).seed}" %>
+			<br />
+			<hr />
+		<% end %>
+			<br />
+			<br />
+			<br />
+	<% end %>
+	</center>
 </div>
 
 
