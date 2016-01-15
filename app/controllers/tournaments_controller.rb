@@ -14,7 +14,7 @@ class TournamentsController < ApplicationController
 
 	def show
 		@tournament = Tournament.find(params[:id])
-		@matches = @tournament.matches
+		@matches = @tournament.matches.sort_by {|match| match.round}
 	end
 
 	def register

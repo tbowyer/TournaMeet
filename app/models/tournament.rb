@@ -6,18 +6,18 @@ class Tournament < ActiveRecord::Base
 
 	def split_match(match)
         if match.player2_id != nil and $rounds[$current_round] == $rounds.last
-                new_match = self.matches.create(:player1_id => match.player2_id, :player2_id => $players.shift)
+                new_match = self.matches.create(round: $current_round.to_i, player1_id: match.player2_id, player2_id: $players.shift)
                 #match.children[1] = new_match
                 $rounds.push([])
                 $rounds[-1].push(new_match)
                 match.update_attributes(:player2_id => nil)
         elsif match.player2_id != nil
-                new_match = self.matches.create(:player1_id => match.player2_id, :player2_id => $players.shift)
+                new_match = self.matches.create(round: $current_round.to_i, player1_id: match.player2_id, player2_id: $players.shift)
                 #match.children[1] = new_match
                 $rounds[-1].push(new_match)
                 match.update_attributes(:player2_id => nil) 
         elsif match.player2_id == nil and match.player1_id != nil
-                new_match = self.matches.create(:player1_id => match.player1_id, :player2_id => $players.shift)
+                new_match = self.matches.create(round: $current_round.to_i, player1_id: match.player1_id, player2_id: $players.shift)
                 #match.children[0] = new_match
                 $rounds[-1].push(new_match)
                 match.update_attributes(:player1_id => nil)             
@@ -38,10 +38,11 @@ class Tournament < ActiveRecord::Base
         x = 0
         $players = self.tournament_users.map{|user| user.id}
         $rounds =[] 
-        @current_node = self.matches.create(round: nil, player1_id: $players.shift, player2_id: $players.shift)
+        $current_round = 0
+        @current_node = self.matches.create(round: $current_round.to_i, player1_id: $players.shift, player2_id: $players.shift)
         $rounds.push([])
         $rounds[0].push(@current_node)
-       	$current_round = 0
+       	
         
         until $players.empty?
             if round_empty?($rounds[$current_round]) == false
