@@ -2,31 +2,32 @@ class Tournament < ActiveRecord::Base
 	has_many :users, :through => :tournament_users
 	has_many :matches
 	has_many :tournament_users
+   
 
 	def split_match(match)
-        if match.player_2 != nil and self.rounds[self.current_round] == self.rounds.last
-                new_match = Match.new(match.player_2, self.players.shift, match, [nil, nil])
-                match.children[1] = new_match
-                self.rounds.push([])
-                self.rounds[-1].push(new_match)
-                match.player_2 = nil
-        elsif match.player_2 != nil
-                new_match = Match.new(match.player_2, self.players.shift, match, [nil, nil])
-                match.children[1] = new_match
-                self.rounds[-1].push(new_match)
-                match.player_2 = nil
-        elsif match.player_2 == nil and match.player_1 != nil
-                new_match = Match.new(match.player_1, self.players.shift, match, [nil, nil])
-                match.children[0] = new_match
-                self.rounds[-1].push(new_match)
-                match.player_1 = nil
+        if match.player2_id != nil and $rounds[$current_round] == $rounds.last
+                new_match = self.matches.create(round: $current_round.to_i, player1_id: match.player2_id, player2_id: $players.shift)
+                #match.children[1] = new_match
+                $rounds.push([])
+                $rounds[-1].push(new_match)
+                match.update_attributes(:player2_id => nil)
+        elsif match.player2_id != nil
+                new_match = self.matches.create(round: $current_round.to_i, player1_id: match.player2_id, player2_id: $players.shift)
+                #match.children[1] = new_match
+                $rounds[-1].push(new_match)
+                match.update_attributes(:player2_id => nil) 
+        elsif match.player2_id == nil and match.player1_id != nil
+                new_match = self.matches.create(round: $current_round.to_i, player1_id: match.player1_id, player2_id: $players.shift)
+                #match.children[0] = new_match
+                $rounds[-1].push(new_match)
+                match.update_attributes(:player1_id => nil)             
         end       
     end
 
     def round_empty?(round)   
         empty = false
         round.each do |match|
-            if match.player1_id == nil and @rounds[@current_round].last.player1_id == nil
+            if match.player1_id == nil and $rounds[$current_round].last.player1_id == nil
                 empty = true
             end
         end
@@ -35,18 +36,19 @@ class Tournament < ActiveRecord::Base
 
     def add_matches()
         x = 0
-        @players = self.users
-        @rounds = []
-        current_node = self.matches.create(round: nil, player1_id: @players.shift, player2_id: @players.shift)
-        @rounds.push([])
-        @rounds[0].push(current_node)
-       	@current_round = 0
+        $players = self.tournament_users.map{|user| user.id}
+        $rounds =[] 
+        $current_round = 0
+        @current_node = self.matches.create(round: $current_round.to_i, player1_id: $players.shift, player2_id: $players.shift)
+        $rounds.push([])
+        $rounds[0].push(@current_node)
+       	
         
-        until @players.empty?
-            if round_empty?(@rounds[@current_round]) == false
-                split_match(lowest_seed_match(@rounds[@current_round])) 
-            elsif round_empty?(@rounds[@current_round])
-                @current_round +=1
+        until $players.empty?
+            if round_empty?($rounds[$current_round]) == false
+                split_match(lowest_seed_match($rounds[$current_round])) 
+            elsif round_empty?($rounds[$current_round])
+                $current_round +=1
             end
         end
     end
@@ -55,14 +57,14 @@ class Tournament < ActiveRecord::Base
 	    lowest_seed = -1
 	    lowest_match = nil
 	    round.each do |match|
-	        if match.player2_id != nil and match.player2_id > lowest_seed
+	        if match.player2_id != nil and self.tournament_users.find(match.player2_id).seed > lowest_seed
 	            lowest_match = match
-	            lowest_seed = match.player_2
+	            lowest_seed = self.tournament_users.find(match.player2_id).seed
 	        elsif match.player1_id == nil and match.player2_id == nil
 	            lowest_seed = lowest_seed
-	        elsif match.player2_id == nil and match.player_1 > lowest_seed
+	        elsif match.player2_id == nil and self.tournament_users.find(match.player1_id).seed > lowest_seed
 	            lowest_match = match
-	            lowest_seed = match.player_1
+	            lowest_seed = self.tournament_users.find(match.player1_id).seed
 	        end
 	    end
 	    return lowest_match

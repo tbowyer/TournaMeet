@@ -14,17 +14,18 @@ class TournamentsController < ApplicationController
 
 	def show
 		@tournament = Tournament.find(params[:id])
+		@matches = @tournament.matches.sort_by {|match| match.round}
 	end
 
 	def register
 		@tournament = Tournament.find(params[:id])
-		User.all[0..3].each do |u|
-			if TournamentUser.exists?(:user => u, :tournament_id => @tournament.id)
-				
+		x = 1
+		User.all[0..15].each do |u|
+			if TournamentUser.exists?(:user => u, :tournament_id => @tournament.id)				
 				flash[:error] = 'You are already registered for this tournament.'
 			else
-				TournamentUser.create(tournament: @tournament, user: u)
-				
+				TournamentUser.create(tournament: @tournament, user: u, seed: x)
+				x += 1	
 			end	
 		end
 		redirect_to tournament_path(@tournament)
@@ -33,6 +34,7 @@ class TournamentsController < ApplicationController
 	def start
 		@tournament = Tournament.find(params[:id])
 		@tournament.add_matches()
+		redirect_to tournament_path(@tournament)
 	end
 
 	private
