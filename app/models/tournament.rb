@@ -14,11 +14,7 @@ class Tournament < ActiveRecord::Base
     if match.player2_id != nil and @rounds[@current_round] == @rounds.last
       match.children[0] = self.matches.create(round: @current_round.to_i + 1, player1_id: nil, player2_id: nil, children: [nil, nil])
       match.children[1] = self.matches.create(round: @current_round.to_i + 1, player1_id: match.player2_id, player2_id: @players.shift, children: [nil, nil])
-      match.update_attributes(:player2_id => nil)
-      puts "TESTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"
-      puts match.inspect
-      puts match.children[0].inspect
-      puts match.children[1].inspect
+      match.update_attributes(:player2_id => nil) 
       @rounds.push([])
       @rounds[-1].push(match.children[0])
       @rounds[-1].push(match.children[1])
@@ -29,19 +25,20 @@ class Tournament < ActiveRecord::Base
       @rounds[-1].push(match.children[1])
       match.update_attributes(:player2_id => nil) 
     elsif match.player2_id == nil and match.player1_id != nil   
-      puts "TESTTTTTTTTTT2"
+      puts "------------------------------------------------------"
+      puts User.find(TournamentUser.find(match.player1_id.to_i).user_id).email.to_s
       match.children[0].update_attributes(:player1_id => match.player1_id, :player2_id => @players.shift)
-      puts match.children[0].inspect
-      match.update_attributes(:player1_id => nil)             
+      match.update_attributes(:player1_id => nil)    
+      match.update_attributes(:player2_id => nil)         
     end       
   end
 
   #Determines if a round has no more players in it, which prompts @current_round to be updated to the previous round.
   def round_empty?(round)   
-    empty = false
+    empty = true
     round.each do |match|
-      if match.player1_id == nil and @rounds[@current_round].last.player1_id == nil
-          empty = true
+      if match.player1_id != nil
+          empty = false
       end
     end
     return empty
@@ -57,26 +54,19 @@ class Tournament < ActiveRecord::Base
     @rounds.push([])
     @rounds[0].push(@root_match)
     until @players.empty?
-        if round_empty?(@rounds[@current_round]) == false
-            split_match(lowest_seed_match(@rounds[@current_round])) 
-        elsif round_empty?(@rounds[@current_round])
+        if round_empty?(@rounds[@current_round])
             @current_round +=1
+        elsif round_empty?(@rounds[@current_round]) == false
+            split_match(lowest_seed_match(@rounds[@current_round]))            
         end
     end
     
     assign_rounds(@rounds)
-    puts "CURRENT ROUND"
-    puts @current_round
-    puts "ROUNDS"
 
     create_remaining_matches(@rounds[@current_round])
-    puts "ROUUUUUUUUUUUUNDS"
-    puts @rounds[(@current_round)].inspect
-    if self.matches.maximum("round") == 2
-      @num_of_matches = 7
+    if self.matches.maximum("round") == 3
+      @num_of_matches = 15
     end
-    puts @num_of_matches
-    puts @root_match.inspect
     assign_match_order(@root_match, [])
   end
 
@@ -96,8 +86,6 @@ class Tournament < ActiveRecord::Base
           lowest_seed = self.tournament_users.find(match.player1_id).seed
       end
     end
-    puts "TESTTTTTTTTTTTTTTTTT3"
-    puts lowest_match.inspect
     return lowest_match
 end
 
@@ -114,9 +102,7 @@ end
   #uses a breadth first traversal to assign a hidden id # 
   #the hidden id is used to display the matches on the tournament show page in the correct order.
   def assign_match_order(match, matches_to_visit)
-    if match != nil and match.children.any?
-      puts "---------------------------------------------------------------------"
-      puts match.children[0].inspect
+    if match != nil and match.children.any? and @num_of_matches != nil
       matches_to_visit.push(match.children[1])
       matches_to_visit.push(match.children[0])
       match.update_attributes(:number => @num_of_matches) 
@@ -133,8 +119,7 @@ end
     return self.matches.create(round: @current_round.to_i + 2, player1_id: nil, player2_id: nil, children: [nil, nil])
   end
 
-  def create_remaining_matches(round)
-    
+  def create_remaining_matches(round)  
     round.each do |match|
       puts "HALLLLLLLLLLLLLLLLLO"
       puts match.children[0].inspect

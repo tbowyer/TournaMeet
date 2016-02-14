@@ -50,6 +50,27 @@
 				<tbody>
 					<tr>
 						<td>
+							<% @round3.each do |match| %>
+								<% puts match.inspect %>
+								<% current_round = 3 %>
+								<% puts match.round.to_i %>
+								<% if current_round == match.round.to_i %>
+									<br />
+									<% if match.player1_id == nil and match.player2_id == nil %>
+										<%= "empty" + "#{match.number}" %>
+										<br/>
+										<%= "empty" + "#{match.number}" %>
+									<% elsif match.player2_id == nil %>
+										<%= "Bye" + "#{match.number}" %>
+									<% else %>
+										<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" + "#{match.number}" %>
+										<br />
+										<%= "#{User.find(TournamentUser.find(match.player2_id.to_i).user_id).email}" + "#{match.number}" %>
+									<% end %>
+								<% end %>
+							<% end %>
+						</td>
+						<td>
 							<% @round2.each do |match| %>
 								<% puts match.inspect %>
 								<% current_round = 2 %>
@@ -61,11 +82,13 @@
 										<br/>
 										<%= "" %>
 									<% elsif match.player2_id == nil %>
+										<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" + "#{match.number}" %>
+										<br />
 										<%= "Bye" %>
 									<% else %>
-										<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" %>
+										<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" + "#{match.number}" %>
 										<br />
-										<%= "#{User.find(TournamentUser.find(match.player2_id.to_i).user_id).email}" %>
+										<%= "#{User.find(TournamentUser.find(match.player2_id.to_i).user_id).email}" + "#{match.number}" %>
 									<% end %>
 								<% end %>
 							<% end %>
@@ -78,17 +101,17 @@
 								<% if current_round == match.round.to_i %>
 									<br />
 									<% if match.player1_id == nil and match.player1_id == nil %>
-										<%= "" %>
+										<%= "empty" + "#{match.number}" %>
 										<br/>
-										<%= "" %>
+										<%= "empty" + "#{match.number}"%>
 									<% elsif match.player2_id == nil %>
-										<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" %>
+										<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" + "#{match.number}" %>
 										<br />
-										<%= "Bye" %>
+										<%= "test" %>
 									<% else %>
-										<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" %>
+										<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" + "#{match.number}"%>
 										<br />
-										<%= "#{User.find(TournamentUser.find(match.player2_id.to_i).user_id).email}" %>
+										<%= "#{User.find(TournamentUser.find(match.player2_id.to_i).user_id).email}" + "#{match.number}" %>
 									<% end %>
 								<% end %>
 							<% end %>
