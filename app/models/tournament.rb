@@ -1,7 +1,7 @@
 class Tournament < ActiveRecord::Base
-	has_many :users, :through => :tournament_users
-	has_many :matches
-	has_many :tournament_users
+  has_many :users, :through => :tournament_users
+  has_many :matches
+  has_many :tournament_users
   attr_accessor :rounds
   attr_accessor :current_round
   attr_accessor :players
@@ -10,7 +10,7 @@ class Tournament < ActiveRecord::Base
   attr_accessor :num_of_matches
 
   #Removes a player from the player_1 or player_2 slot and pushes them into a match in the previous round.  
-	def split_match(match)
+  def split_match(match)
     if match.player2_id != nil and @rounds[@current_round] == @rounds.last
       match.children[0] = self.matches.create(round: @current_round.to_i + 1, player1_id: nil, player2_id: nil, children: [nil, nil])
       match.children[1] = self.matches.create(round: @current_round.to_i + 1, player1_id: match.player2_id, player2_id: @players.shift, children: [nil, nil])
