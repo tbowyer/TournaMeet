@@ -33,33 +33,93 @@
 
 <div class="booyah-box col-xs-10 col-xs-offset-1">
 	<h1>Matches</h1>
-	<% current_round = -1 %>
-	<% @matches.each do |match| %>
-		<% if current_round != match.round.to_i %>
-			<% current_round = match.round.to_i %>
-			<%= "Round: #{current_round}" %>
-			<hr />
-		<% end %>
-		<% if match.player2_id != nil %>
-			<hr />
-			<%= "p1 Seed: #{TournamentUser.find(match.player1_id.to_i).seed}" %>
-			<%= "p2 Seed: #{TournamentUser.find(match.player2_id.to_i).seed}" %>
-			<br />
-			<hr />	
-		<% elsif match.player1_id == nil and match.player2_id == nil  %>
-			<%= "Bye" %>
-			<%= "Bye" %>
-			<br />
-			<hr />
-		<% elsif match.player1_id != nil and match.player2_id == nil %>
-			<%= "p1 seed: #{TournamentUser.find(match.player1_id.to_i).seed}" %>
-			
-			<br />
-			<hr />
-		<% else %>
-			<%= "hi" %>
-		<% end %>
-	<% end %>
+		<div class="container">
+			<table class = "table" >
+				<thead>
+					<tr>
+						<% x = 0 %>
+						<% if @rounds != nil %>
+							<% (@rounds + 1).times do %>
+								<th>Round </th>
+								<% x += 1 %>
+							<% end %>
+						<% end %>
+						
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<% @round2.each do |match| %>
+								<% puts match.inspect %>
+								<% current_round = 2 %>
+								<% puts match.round.to_i %>
+								<% if current_round == match.round.to_i %>
+									<br />
+									<% if match.player1_id == nil and match.player2_id == nil %>
+										<%= "" %>
+										<br/>
+										<%= "" %>
+									<% elsif match.player2_id == nil %>
+										<%= "Bye" %>
+									<% else %>
+										<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" %>
+										<br />
+										<%= "#{User.find(TournamentUser.find(match.player2_id.to_i).user_id).email}" %>
+									<% end %>
+								<% end %>
+							<% end %>
+						</td>
+						<td>
+							<br />
+							<% @round1.each do |match| %>
+								<% current_round = 1 %>
+								<% puts match.round.to_i %>
+								<% if current_round == match.round.to_i %>
+									<br />
+									<% if match.player1_id == nil and match.player1_id == nil %>
+										<%= "" %>
+										<br/>
+										<%= "" %>
+									<% elsif match.player2_id == nil %>
+										<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" %>
+										<br />
+										<%= "Bye" %>
+									<% else %>
+										<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" %>
+										<br />
+										<%= "#{User.find(TournamentUser.find(match.player2_id.to_i).user_id).email}" %>
+									<% end %>
+								<% end %>
+							<% end %>
+						</td>
+						<td>
+						<br />
+						<br />
+						<br />
+							<% @matches.each do |match| %>
+								<% current_round = 0 %>
+								<% if current_round == match.round.to_i %>
+									<% if match.player1_id != nil %>
+										<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" + "#{match.number}" %>
+										<br />
+									<% elsif match.player1_id == nil %>
+										<%= "empty" + "#{match.number}" %>
+										<br />
+									<% end %>
+									<% if match.player2_id == nil %>
+										<%= "empty" + "#{match.number}" %>
+									<% else %>
+										<%= "#{User.find(TournamentUser.find(match.player2_id.to_i).user_id).email}" + "#{match.number}"  %>
+									<% end %>
+									<hr />
+								<% end %>
+							<% end %>
+						</td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
 	</center>
 </div>
 

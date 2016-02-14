@@ -1,6 +1,7 @@
 class Match < ActiveRecord::Base
 	has_many :users
 	belongs_to :tournament
+	attr_accessor :children
 
 	private
 
