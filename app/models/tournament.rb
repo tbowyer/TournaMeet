@@ -25,8 +25,6 @@ class Tournament < ActiveRecord::Base
       @rounds[-1].push(match.children[1])
       match.update_attributes(:player2_id => nil) 
     elsif match.player2_id == nil and match.player1_id != nil   
-      puts "------------------------------------------------------"
-      puts User.find(TournamentUser.find(match.player1_id.to_i).user_id).email.to_s
       match.children[0].update_attributes(:player1_id => match.player1_id, :player2_id => @players.shift)
       match.update_attributes(:player1_id => nil)    
       match.update_attributes(:player2_id => nil)         

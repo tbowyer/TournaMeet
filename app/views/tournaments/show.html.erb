@@ -34,45 +34,35 @@
 <div class="booyah-box col-xs-10 col-xs-offset-1">
 	<h1>Matches</h1>
 		<main id="tournament">
-		<ul class="round round-1">
-			<% @round2.each do |match| %>
-				<li class="spacer">&nbsp;</li>
-				<% current_round = 2 %>
-				<% if current_round == match.round.to_i %>
-					<% if match.player1_id == nil and match.player2_id == nil %>
-						<%= "empty" + "#{match.number}" %>
-						<br/>
-						<%= "empty" + "#{match.number}" %>
-					<% elsif match.player2_id == nil %>
-						<%= "Bye" + "#{match.number}" %>
-					<% else %>
-						<li class="game game-top">	<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" + "#{match.number}" %> </li>
-						<li class="game game-spacer">&nbsp;</li>
-						<li class="game game-bottom "><%= "#{User.find(TournamentUser.find(match.player2_id.to_i).user_id).email}" + "#{match.number}" %> </li>
-					<% end %>
-				<% end %>
-			<% end %>
-		</ul>
-		<ul class="round round-2">
-			<% @round1.each do |match| %>
-					<% current_round = 1 %>
-					<li class="spacer">&nbsp;</li>
-					<% if current_round == match.round.to_i %>
+		<% x = 1 %>
+		<% current_round = @y %>
+		<% (@total_rounds + 1).times do %>
+			<ul>
+			<li>&nbsp;</li>
+				<% @ordered_matches.where(round: @test).each do |match| %>
+					<% if match.round == @test %>
 						<% if match.player1_id == nil and match.player2_id == nil %>
-							<li class="game game-top">	<%= "empty" + "#{match.number}" %> </li>
-							<li class="game game-spacer">&nbsp;</li>
-							<li class="game game-bottom "><%= "empty" + "#{match.number}" %> </li>
-						<% elsif match.player2_id == nil %>
-							<%= "Bye" + "#{match.number}" %>
+							<li class="game game-top">	<%= "" %> </li>
+							<li> &nbsp; </li>
+							<li class="game game-bottom "><%= "" %> </li>
+						<% elsif match.player1_id != nil and match.player2_id == nil %>
+							<li class="game game-top">	<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" + "#{match.number}" %> </li>
+							<li> &nbsp; </li>
+							<li class="game game-bottom "><%= "" %> </li>
 						<% else %>
 							<li class="game game-top">	<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" + "#{match.number}" %> </li>
-							<li class="game game-spacer">&nbsp;</li>
+							<li> &nbsp; </li>
 							<li class="game game-bottom "><%= "#{User.find(TournamentUser.find(match.player2_id.to_i).user_id).email}" + "#{match.number}" %> </li>
 						<% end %>
+						<li> &nbsp; </li>
 					<% end %>
 				<% end %>
-				<li class="spacer">&nbsp;</li>
-		</ul>
+			</ul>
+			<% x += 1 %>
+			<% @test -= 1 %>
+		<% end %>
+		
+	
 	
 	</main>
 </div>

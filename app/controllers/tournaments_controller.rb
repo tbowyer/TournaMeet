@@ -15,7 +15,9 @@ class TournamentsController < ApplicationController
 	def show
 		@tournament = Tournament.find(params[:id])
 		@matches = @tournament.matches.sort_by {|match| match.round}
-		@rounds = @tournament.matches.maximum("round")
+		@total_rounds = @tournament.matches.maximum("round")
+		@ordered_matches = @tournament.matches.order(:number)
+		@test = @total_rounds
 		@round3 = @tournament.matches.where(:round => 3).order(:number)
 		@round2 = @tournament.matches.where(:round => 2).order(:number)
 		@round1 = @tournament.matches.where(:round => 1).order(:number)
@@ -24,7 +26,7 @@ class TournamentsController < ApplicationController
 	def register
 		@tournament = Tournament.find(params[:id])
 		x = 1
-		User.all[0..7].each do |u|
+		User.all[0..15].each do |u|
 			if TournamentUser.exists?(:user => u, :tournament_id => @tournament.id)				
 				flash[:error] = 'You are already registered for this tournament.'
 			else
