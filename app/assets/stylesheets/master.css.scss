@@ -27,25 +27,46 @@ h1,h2,h3,h4,h5,h6 {
 	
 }
 
-.centered { 
-  height:500px;
-  text-align:center; 
-  vertical-align:middle;
-
+main, ul {
+  display:flex;
 }
 
-.tall{
-  height:100%;
+ul {
+  flex-direction:column;
+  width: 200px;
+  list-style:none;
+  padding:0;
 }
 
-.table {
-
+.game + li {
+  flex-grow:1;
 }
 
-.round{
-  padding:60px;
+li:first-child,li:last-child {
+  flex-grow:.5;
 }
 
-.match{
-  border: 1px solid black;
+.game {
+  padding-left:20px;
+}
+
+.winner {
+  font-weight:bold;
+}
+
+.game span {
+  float:right;
+  margin-right:5px;
+}
+
+.game-top {
+  border-bottom:1px solid #aaa;
+}
+
+.game-top + li {
+  border-right:1px solid #aaa; min-height:40px;
+}
+
+.game-bottom {
+  border-top:1px solid #aaa;
 }
