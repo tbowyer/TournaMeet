@@ -61,6 +61,7 @@ li:first-child,li:last-child {
 
 .game-top {
   border-bottom:1px solid #aaa;
+  height: 20px;
 }
 
 .game-top + li {
@@ -69,4 +70,5 @@ li:first-child,li:last-child {
 
 .game-bottom {
   border-top:1px solid #aaa;
+  height: 40px;
 }

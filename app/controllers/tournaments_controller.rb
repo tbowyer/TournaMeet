@@ -17,16 +17,13 @@ class TournamentsController < ApplicationController
 		@matches = @tournament.matches.sort_by {|match| match.round}
 		@total_rounds = @tournament.matches.maximum("round")
 		@ordered_matches = @tournament.matches.order(:number)
-		@test = @total_rounds
-		@round3 = @tournament.matches.where(:round => 3).order(:number)
-		@round2 = @tournament.matches.where(:round => 2).order(:number)
-		@round1 = @tournament.matches.where(:round => 1).order(:number)
 	end
 
 	def register
 		@tournament = Tournament.find(params[:id])
 		x = 1
-		User.all[0..15].each do |u|
+		#The number of users registered is hard coded in for now to test.
+		User.all[0..16].each do |u|
 			if TournamentUser.exists?(:user => u, :tournament_id => @tournament.id)				
 				flash[:error] = 'You are already registered for this tournament.'
 			else
