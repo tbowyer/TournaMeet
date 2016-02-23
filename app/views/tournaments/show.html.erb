@@ -39,7 +39,7 @@
 		<% current_round = @y %>
 		<% if @total_rounds != nil %>
 			<% (@total_rounds + 1).times do %>
-				<ul>
+				<ul class = "ul-match">
 				<li>&nbsp;</li>
 					<% @ordered_matches.where(round: @test).each do |match| %>
 						<% if match.round == @test %>
