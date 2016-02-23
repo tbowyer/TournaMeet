@@ -1,9 +1,6 @@
 Tournameet::Application.routes.draw do
-
   devise_for :users
   root 'tournaments#index'
-
-
 
   resources :tournaments do
     resources :matches
@@ -11,7 +8,7 @@ Tournameet::Application.routes.draw do
     member do
       post :register
       post :start
-      
+      delete :delete_tournament 
     end
   end
     

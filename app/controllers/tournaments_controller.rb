@@ -17,6 +17,7 @@ class TournamentsController < ApplicationController
 		@matches = @tournament.matches.sort_by {|match| match.round}
 		@total_rounds = @tournament.matches.maximum("round")
 		@ordered_matches = @tournament.matches.order(:number)
+		@test = @total_rounds
 	end
 
 	def register
@@ -38,6 +39,12 @@ class TournamentsController < ApplicationController
 		@tournament = Tournament.find(params[:id])
 		@tournament.add_matches()
 		redirect_to tournament_path(@tournament)
+	end
+
+	def delete_tournament
+		@tournament = Tournament.find(params[:id])
+		@tournament.destroy
+		redirect_to root_path
 	end
 
 	private
