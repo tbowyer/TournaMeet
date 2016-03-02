@@ -107,9 +107,11 @@ end
       @num_of_matches -= 1
       assign_match_order(matches_to_visit.shift, matches_to_visit)
     else
-      match.update_attributes(:number => @num_of_matches) 
-      @num_of_matches -= 1
-      assign_match_order(matches_to_visit.shift, matches_to_visit)
+      if match != nil and @num_of_matches != nil and matches_to_visit.length > 1
+        match.update_attributes(:number => @num_of_matches) 
+        @num_of_matches -= 1
+        assign_match_order(matches_to_visit.shift, matches_to_visit)
+      end
     end
   end
 
