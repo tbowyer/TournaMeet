@@ -5,5 +5,4 @@ This is a side project I'm making to learn Ruby/Rails.  The end goal is to be ab
 
 Current progress is at 
 
-
 https://tournameet.herokuapp.com
