@@ -1,7 +1,8 @@
 == README
 
-This is a side project I'm making to learn Ruby/Rails.  The end goal is to be able to let users make tournaments, allow for user sign up, and then automatic bracket generation once a tournament is started. 
+This is a side project I'm making to learn Ruby/Rails.  The end goal is to be able to let users make tournaments, allow for user sign up, and then automatic bracket generation once a tournament is started.
+
 
 Current progress is at 
-
+ß
 https://tournameet.herokuapp.com
