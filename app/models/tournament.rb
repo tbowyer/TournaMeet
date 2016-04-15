@@ -12,15 +12,15 @@ class Tournament < ActiveRecord::Base
   #Removes a player from the player_1 or player_2 slot and pushes them into a match in the previous round.  
   def split_match(match)
     if match.player2_id != nil and @rounds[@current_round] == @rounds.last
-      match.children[0] = self.matches.create(round: @current_round.to_i + 1, player1_id: nil, player2_id: nil, children: [nil, nil])
-      match.children[1] = self.matches.create(round: @current_round.to_i + 1, player1_id: match.player2_id, player2_id: @players.shift, children: [nil, nil])
+      match.children[0] = self.matches.create(round: @current_round.to_i + 1, player1_id: nil, player2_id: nil, children: [nil, nil], next_match_id: match.id)
+      match.children[1] = self.matches.create(round: @current_round.to_i + 1, player1_id: match.player2_id, player2_id: @players.shift, children: [nil, nil], next_match_id: match.id)
       match.update_attributes(:player2_id => nil) 
       @rounds.push([])
       @rounds[-1].push(match.children[0])
       @rounds[-1].push(match.children[1])
     elsif match.player2_id != nil
-      match.children[0] = self.matches.create(round: @current_round.to_i, player1_id: nil, player2_id: nil, children: [nil,nil])
-      match.children[1] = self.matches.create(round: @current_round.to_i, player1_id: match.player2_id, player2_id: @players.shift, children: [nil,nil])
+      match.children[0] = self.matches.create(round: @current_round.to_i, player1_id: nil, player2_id: nil, children: [nil,nil], next_match_id: match.id)
+      match.children[1] = self.matches.create(round: @current_round.to_i, player1_id: match.player2_id, player2_id: @players.shift, children: [nil,nil], next_match_id: match.id)
       @rounds[-1].push(match.children[0])
       @rounds[-1].push(match.children[1])
       match.update_attributes(:player2_id => nil) 
