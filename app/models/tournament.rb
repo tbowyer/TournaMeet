@@ -121,13 +121,11 @@ end
 
   def create_remaining_matches(round)  
     round.each do |match|
-      puts "HALLLLLLLLLLLLLLLLLO"
       puts match.children[0].inspect
       puts match.children[1].inspect
       if match.player1_id != nil and match.player2_id != nil
         match.children[0] = self.matches.create(round: @current_round.to_i + 1, player1_id: nil, player2_id: nil, children: [nil, nil])
         match.children[1] = self.matches.create(round: @current_round.to_i + 1, player1_id: nil, player2_id: nil, children: [nil, nil])
-        puts "MATCH 111111111"
         puts match.children[0].inspect
       end
     end
