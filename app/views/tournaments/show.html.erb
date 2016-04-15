@@ -48,12 +48,12 @@
 								<li> &nbsp; </li>
 								<li class="game game-bottom "><%= "" %> </li>
 							<% elsif match.player1_id != nil and match.player2_id == nil %>
-								<li class="game game-top">	<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" + "#{match.number}" %> </li>
+								<li class="game game-top">	<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" + "#{match.number}" %>  </li>
 								<li> &nbsp; </li>
 								<li class="game game-bottom "><%= "" %> </li>
 							<% else %>
 								<li class="game game-top">	<%= "#{User.find(TournamentUser.find(match.player1_id.to_i).user_id).email}" + "#{match.number}" %> </li>
-								<li> &nbsp; </li>
+								<li> <%= link_to match.id, [@tournament, match] %> </li>
 								<li class="game game-bottom "><%= "#{User.find(TournamentUser.find(match.player2_id.to_i).user_id).email}" + "#{match.number}" %> </li>
 							<% end %>
 							<li> &nbsp; </li>

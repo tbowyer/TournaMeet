@@ -24,7 +24,7 @@ class TournamentsController < ApplicationController
 		@tournament = Tournament.find(params[:id])
 		x = 1
 		#The number of users registered is hard coded in for now to test.
-		User.all[0..16].each do |u|
+		User.all[0..15].each do |u|
 			if TournamentUser.exists?(:user => u, :tournament_id => @tournament.id)				
 				flash[:error] = 'You are already registered for this tournament.'
 			else
