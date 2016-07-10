@@ -3,7 +3,12 @@ Tournameet::Application.routes.draw do
   root 'tournaments#index'
 
   resources :tournaments do
-    resources :matches
+    resources :matches do
+      post :report_match
+      member do
+         post :report_match
+      end
+    end
     resources :comments, :only => :create
     member do
       post :register

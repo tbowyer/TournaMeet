@@ -3,8 +3,12 @@
   
   <h1>Match details for <%= @match.player1_id %></h1>
   <center>
-   <%= "#{@match.player1_id}" %>
    <br />
-   <%= "#{User.find(TournamentUser.find(@match.player1_id.to_i).user_id).email}" + " vs." "#{User.find(TournamentUser.find(@match.player2_id.to_i).user_id).email}" %> 
+   <% unless @match.player1_id == nil and @match.player2_id == nil %>
+   	<%= "#{User.find(TournamentUser.find(@match.player1_id.to_i).user_id).email}" + "  vs  " "#{User.find(TournamentUser.find(@match.player2_id.to_i).user_id).email}" %> 
+   	<% end %>
+
+   	<br />
+   	<%= button_to "Report Winner", {:controller => :matches, :action => 'report_match'}, :method => :post %>
   </center>
 </div>

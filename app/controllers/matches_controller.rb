@@ -7,19 +7,25 @@ class MatchesController < ApplicationController
 	end
 
 	def report_match
-		@match = Match.find(params[:id])
+		@match = Match.find(params[:match_id])
 		@next_match = Match.find(@match.next_match_id)
 		#figure out way to pass in the winners id here
 		
-		@match.winner = @match.player2_id
+		@match.winner = @match.player1_id
 		if @next_match.children[1] == @match
 			@next_match.update_attributes(:player2_id => @match.winner)
+			@match.update_attributes(:player1_id => nil)
+			redirect_to match.id, [@tournament, match]
 		elsif @next_match.children[0] = @match
 			@next_match.update_attributes(:player1_id => @match.winner)
+			@match.update_attributes(:player1_id => nil)
+			redirect_to match.id, [@tournament, match]
 		end
-
-
 	end
+
+	def update
+	end
+
 	
 	
 end
