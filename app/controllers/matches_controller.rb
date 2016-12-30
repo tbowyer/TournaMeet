@@ -12,11 +12,11 @@ class MatchesController < ApplicationController
 		#figure out way to pass in the winners id here
 		
 		@match.winner = @match.player1_id
-		if @next_match.children[1] == @match
+		if Match.find(@next_match.child_one_id) == @match
 			@next_match.update_attributes(:player2_id => @match.winner)
 			@match.update_attributes(:player1_id => nil)
 			redirect_to match.id, [@tournament, match]
-		elsif @next_match.children[0] = @match
+		elsif Match.find(@next_match.child_two_id) == @match
 			@next_match.update_attributes(:player1_id => @match.winner)
 			@match.update_attributes(:player1_id => nil)
 			redirect_to match.id, [@tournament, match]

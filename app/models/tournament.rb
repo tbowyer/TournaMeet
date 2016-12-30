@@ -15,6 +15,7 @@ class Tournament < ActiveRecord::Base
       match.children[0] = self.matches.create(round: @current_round.to_i + 1, player1_id: nil, player2_id: nil, children: [nil, nil], next_match_id: match.id)
       match.children[1] = self.matches.create(round: @current_round.to_i + 1, player1_id: match.player2_id, player2_id: @players.shift, children: [nil, nil], next_match_id: match.id)
       match.update_attributes(:player2_id => nil) 
+      match.update_attributes(:child_one_id => match.children[1].id, :child_two_id => match.children[0].id)
       @rounds.push([])
       @rounds[-1].push(match.children[0])
       @rounds[-1].push(match.children[1])
